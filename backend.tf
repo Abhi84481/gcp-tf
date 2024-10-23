@@ -4,7 +4,7 @@ terraform {
     organization = "ADC" 
 
     workspaces { 
-      name = "pipeline-test" 
+      name = "test" 
     } 
   } 
 }
