@@ -3,11 +3,21 @@ provider "google" {
   region  = "me-central2"
 }
 
-resource "google_storage_bucket" "test_bucket" {
-  name     = "tfe-test-bucket-${random_id.bucket_id.hex}"
-  location = "ME-CENTRAL2"
-}
+resource "google_storage_bucket" "static-site" {
+  name          = "image-store.com"
+  location      = "me-central2"
+  force_destroy = true
 
-resource "random_id" "bucket_id" {
-  byte_length = 4
+  uniform_bucket_level_access = true
+
+  website {
+    main_page_suffix = "index.html"
+    not_found_page   = "404.html"
+  }
+  cors {
+    origin          = ["http://image-store.com"]
+    method          = ["GET", "HEAD", "PUT", "POST", "DELETE"]
+    response_header = ["*"]
+    max_age_seconds = 3600
+  }
 }
